@@ -50,3 +50,4 @@ Temporary Items
 .settings/org.eclipse.core.resources.prefs
 *.prefs
 RULES
+/target
