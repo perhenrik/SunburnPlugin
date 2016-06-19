@@ -32,18 +32,12 @@ public class KillPlantsRunnable extends BukkitRunnable {
     	}
     	World w = worlds.get(worldCounter);
 
-    	if(debug) {
-    		//plugin.getLogger().info(this.getClass() + ": World: " + w.getName());
-    	}
-    		
     	if(w.getName().equals(plugin.getWorld())) {
     		if(chunks == null || chunks.length < 1 || chunkCounter >= chunks.length) {
     			chunks = worlds.get(worldCounter++).getLoadedChunks();
     			chunkCounter = 0;
     		}
-        	if(debug) {
-        		plugin.getLogger().info(w.getName() + ": Handling chunk " + chunkCounter + " of " + chunks.length);
-        	}
+       		plugin.debug(w.getName() + ": Handling chunk " + chunkCounter + " of " + chunks.length);
         		
 			handleChunk(chunks[chunkCounter++]);
     	} else {

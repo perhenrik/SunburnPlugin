@@ -48,46 +48,39 @@ public class DamageEntityRunnable extends BukkitRunnable {
 		int sunLevel = 0;
 		int blockLevel = 0;
 		if(entity != null) {
-			//getLogger().info("  Class: " + entity.getName());
 			sunLevel = entity.getLocation().getBlock().getLightFromSky();
 			blockLevel = entity.getLocation().getBlock().getLightLevel();
 			level = sunLevel + blockLevel;
-			//getLogger().info("    Light Level: " + level);
 			if(level >= 30 && nothingAbove(entity.getLocation())) { 
 				EntityEquipment eq = ((LivingEntity) entity).getEquipment();
 				if(eq != null) {
 					if(eq.getHelmet() != null && eq.getHelmet().getType() == Material.LEATHER_HELMET) {
 						level -= 5;
 					}
-					//getLogger().info("    Level after helmet: " + level);
 					if(eq.getChestplate() != null && eq.getChestplate().getType() == Material.LEATHER_CHESTPLATE) {
 						level -= 10;
 					}
-					//getLogger().info("    Level after chestplate: " + level);
 					if(eq.getLeggings() != null && eq.getLeggings().getType() == Material.LEATHER_LEGGINGS) {
 						level -= 10;
 					}
-					//getLogger().info("    Level after leggings: " + level);
 					if(eq.getBoots() != null && eq.getBoots().getType() == Material.LEATHER_BOOTS) {
 						level -= 5;
 					}
-					//getLogger().info("    Level after boots: " + level);
 				}
 			} else {
 				level = 0;
 			}
 		}
-		//getLogger().info("    Final Level: " + level);
 		return level < 0 ? 0 : (int) Math.round(level / (float) 10);
 	}
 
 	private boolean nothingAbove(Location location) {
 		boolean nothingAbove = true;
-		int x = (int) location.getX();
-		int z = (int) location.getZ();
-		for(int y = (int) location.getY(); y < 256 && nothingAbove; y++) {
+		int x = location.getBlockX();
+		int z = location.getBlockZ();
+		for(int y = location.getBlockY(); y < 256 && nothingAbove; y++) {
 			Block block = location.getWorld().getBlockAt(x, y, z);
-			plugin.getLogger().info("    Checking block at " + x + "," + y + "," + z + ": " + block.getType());
+			plugin.debug("Checking block at " + x + "," + y + "," + z + ": " + block.getType());
 			if(block.getType() == Material.STAINED_GLASS) {
 				nothingAbove = false;
 			}

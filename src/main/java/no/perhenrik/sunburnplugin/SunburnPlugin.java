@@ -61,6 +61,12 @@ public class SunburnPlugin extends JavaPlugin {
         getLogger().info(msg);
     }
     
+    public void debug(String msg) {
+    	if(getDebug()) {
+    		getLogger().info("DEBUG: " + msg);
+    	}
+    }
+    
     public void severe(String msg) {
         getLogger().severe(msg);
     }
