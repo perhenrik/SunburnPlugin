@@ -4,8 +4,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.EntityEffect;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -51,7 +53,7 @@ public class DamageEntityRunnable extends BukkitRunnable {
 			blockLevel = entity.getLocation().getBlock().getLightLevel();
 			level = sunLevel + blockLevel;
 			//getLogger().info("    Light Level: " + level);
-			if(level >= 30) { 
+			if(level >= 30 && nothingAbove(entity.getLocation())) { 
 				EntityEquipment eq = ((LivingEntity) entity).getEquipment();
 				if(eq != null) {
 					if(eq.getHelmet() != null && eq.getHelmet().getType() == Material.LEATHER_HELMET) {
@@ -77,5 +79,19 @@ public class DamageEntityRunnable extends BukkitRunnable {
 		}
 		//getLogger().info("    Final Level: " + level);
 		return level < 0 ? 0 : (int) Math.round(level / (float) 10);
+	}
+
+	private boolean nothingAbove(Location location) {
+		boolean nothingAbove = true;
+		int x = (int) location.getX();
+		int z = (int) location.getZ();
+		for(int y = (int) location.getY(); y < 256 && nothingAbove; y++) {
+			Block block = location.getWorld().getBlockAt(x, y, z);
+			plugin.getLogger().info("    Checking block at " + x + "," + y + "," + z + ": " + block.getType());
+			if(block.getType() == Material.STAINED_GLASS) {
+				nothingAbove = false;
+			}
+		}
+		return nothingAbove;
 	}
 }
