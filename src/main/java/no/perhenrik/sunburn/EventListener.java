@@ -1,4 +1,4 @@
-package no.perhenrik.sunburnplugin;
+package no.perhenrik.sunburn;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
@@ -6,7 +6,7 @@ import org.bukkit.plugin.Plugin;
 
 public class EventListener implements Listener {
 
-	public SunburnPlugin plugin ;
+	private SunburnPlugin plugin ;
 	 
 	public EventListener(Plugin instance) {
 		plugin = (SunburnPlugin) instance;

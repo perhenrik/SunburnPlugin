@@ -1,4 +1,4 @@
-package no.perhenrik.sunburnplugin.runnable;
+package no.perhenrik.sunburn.runnable;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -6,7 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.scheduler.BukkitRunnable;
-import no.perhenrik.sunburnplugin.SunburnPlugin;
+import no.perhenrik.sunburn.SunburnPlugin;
 
 import java.util.List;
 
@@ -17,15 +17,12 @@ public class KillPlantsRunnable extends BukkitRunnable {
 	private Chunk[] chunks = null;
 	private int worldCounter = 0;
 	private int chunkCounter = 0;
-	private boolean debug = false;
-	
+
 	public KillPlantsRunnable(SunburnPlugin plugin) {
 		this.plugin = plugin;
-		this.debug = plugin.getDebug();
 	}
 	
     public void run(){
-		debug = plugin.getDebug();
     	if(worlds == null || worlds.isEmpty() || worldCounter >= worlds.size()) {
     		worlds = Bukkit.getWorlds();
     		worldCounter = 0;
@@ -37,7 +34,7 @@ public class KillPlantsRunnable extends BukkitRunnable {
     			chunks = worlds.get(worldCounter++).getLoadedChunks();
     			chunkCounter = 0;
     		}
-       		plugin.debug(w.getName() + ": Handling chunk " + chunkCounter + " of " + chunks.length);
+       		plugin.debug(String.format("%s: Handling chunk %d of %d", w.getName(), chunkCounter, chunks.length));
         		
 			handleChunk(chunks[chunkCounter++]);
     	} else {
@@ -74,7 +71,7 @@ public class KillPlantsRunnable extends BukkitRunnable {
 						lightLevel = (l > lightLevel ? l : lightLevel); 
 					}
 				}
-				if(b != null && lightLevel > 0) {
+				if(lightLevel > 0) {
 					switch(b.getType()) {
 					case BROWN_MUSHROOM:
 					case CARROT:
@@ -112,13 +109,11 @@ public class KillPlantsRunnable extends BukkitRunnable {
 		}
     }
 
-	public int getSunburnLevel(Block block) {
+	private int getSunburnLevel(Block block) {
 		int level = 0;
-		int sunLevel = 0;
-		int blockLevel = 0;
 		if(block != null) {
-			sunLevel = block.getLightFromSky();
-			blockLevel = block.getLightLevel();
+			int sunLevel = block.getLightFromSky();
+			int blockLevel = block.getLightLevel();
 			level = sunLevel + blockLevel;
 			if(level < 30) { 
 				level = 0;

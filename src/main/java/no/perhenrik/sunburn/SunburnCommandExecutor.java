@@ -1,28 +1,27 @@
-package no.perhenrik.sunburnplugin;
+package no.perhenrik.sunburn;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
-public class SunburnCommandExecutor implements CommandExecutor {
+class SunburnCommandExecutor implements CommandExecutor {
 	
 	private final SunburnPlugin plugin;
 	 
-	public SunburnCommandExecutor(SunburnPlugin plugin) {
+	SunburnCommandExecutor(SunburnPlugin plugin) {
 		this.plugin = plugin;
 	}
 
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		boolean isOp = sender.isOp();
 		
-    	if (cmd.getName().equalsIgnoreCase("sb")) {
+    	if (cmd.getName().equalsIgnoreCase("sunburn")) {
     		if(args.length < 1) {
     			usage(sender);
     		} else {   
     			ReturnValue ret = new ReturnValue();
     			ret.setOk(false);
-    			ret.setMessage("You do not have perission to run this command");
+    			ret.setMessage("You do not have permission to run this command");
 	    		switch(args[0]) {
 	    		    case "info":
 	    		    	if(isOp) {
@@ -75,10 +74,10 @@ public class SunburnCommandExecutor implements CommandExecutor {
 	private void info(CommandSender sender) {
 		sender.sendMessage("Sunburn info:");
 		sender.sendMessage("------------");
-		sender.sendMessage("world: " + plugin.getWorld());
-		sender.sendMessage("damageticks: " + plugin.getDamageTicks());
-		sender.sendMessage("natureticks: " + plugin.getNatureTicks());   
-		sender.sendMessage("debug: " + plugin.getDebug()); 
+		sender.sendMessage(SunburnPlugin.ENABLED_WORLD + plugin.getWorld());
+		sender.sendMessage(SunburnPlugin.DAMAGE_TICKS + plugin.getDamageTicks());
+		sender.sendMessage(SunburnPlugin.NATURE_TICKS + plugin.getNatureTicks());
+		sender.sendMessage(SunburnPlugin.DEBUG + plugin.getDebug());
 	} 
 
 	private void usage(CommandSender sender) {

@@ -1,4 +1,4 @@
-world: world
-damageticks: 200
-natureticks: 15
-debug: false
+World: world
+Damage ticks: 200
+Nature ticks: 15
+Debug: false

@@ -1,4 +1,4 @@
-package no.perhenrik.sunburnplugin.runnable;
+package no.perhenrik.sunburn.runnable;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import no.perhenrik.sunburnplugin.SunburnPlugin;
+import no.perhenrik.sunburn.SunburnPlugin;
 
 public class DamageEntityRunnable extends BukkitRunnable {
 
@@ -26,12 +26,11 @@ public class DamageEntityRunnable extends BukkitRunnable {
 	
     public void run(){
         World w = Bukkit.getWorld(this.plugin.getWorld());
-		//plugin.getLogger().info("World: " + w.getName());
         for(Entity e : w.getEntities()){
         	if(e instanceof Player && ((Player)e).getGameMode() == GameMode.CREATIVE) {
         		continue;
         	}
-        	int damage = 0;
+        	int damage;
         	if(e instanceof LivingEntity && (damage = getSunburnLevel((LivingEntity)e)) > 0){
         		//getLogger().info("  Entity: " + e.getType().getEntityClass().toString() + ", Damage: " + damage + ", Health: " + ((LivingEntity)e).getHealth());
         		double actualDamage = ((LivingEntity)e).getHealth() > damage ? damage : ((LivingEntity)e).getHealth();
@@ -43,16 +42,14 @@ public class DamageEntityRunnable extends BukkitRunnable {
     }
 
 
-	public int getSunburnLevel(LivingEntity entity) {
+	private int getSunburnLevel(LivingEntity entity) {
 		int level = 0;
-		int sunLevel = 0;
-		int blockLevel = 0;
 		if(entity != null) {
-			sunLevel = entity.getLocation().getBlock().getLightFromSky();
-			blockLevel = entity.getLocation().getBlock().getLightLevel();
+			int sunLevel = entity.getLocation().getBlock().getLightFromSky();
+			int blockLevel = entity.getLocation().getBlock().getLightLevel();
 			level = sunLevel + blockLevel;
 			if(level >= 30 && nothingAbove(entity.getLocation())) { 
-				EntityEquipment eq = ((LivingEntity) entity).getEquipment();
+				EntityEquipment eq = entity.getEquipment();
 				if(eq != null) {
 					if(eq.getHelmet() != null && eq.getHelmet().getType() == Material.LEATHER_HELMET) {
 						level -= 5;
@@ -71,7 +68,7 @@ public class DamageEntityRunnable extends BukkitRunnable {
 				level = 0;
 			}
 		}
-		return level < 0 ? 0 : (int) Math.round(level / (float) 10);
+		return level < 0 ? 0 : Math.round(level / (float) 10);
 	}
 
 	private boolean nothingAbove(Location location) {

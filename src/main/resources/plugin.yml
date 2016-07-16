@@ -1,9 +1,9 @@
 name: Sunburn
-main: no.perhenrik.sunburnplugin.SunburnPlugin
-version: 1.0.2
+main: no.perhenrik.sunburn.SunburnPlugin
+version: 1.1.0
 author: perhenrik
 description: The sun burns all living
 commands:
-    sb:
+    sunburn:
         description: Shows info
-        usage: /sb
+        usage: /sunburn
